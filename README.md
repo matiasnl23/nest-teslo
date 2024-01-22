@@ -18,3 +18,8 @@ cp .env.example .env
 ```
 yarn start:dev
 ```
+
+4. Popular la base de datos
+```
+GET http://localhost:3000/api/seed
+```
