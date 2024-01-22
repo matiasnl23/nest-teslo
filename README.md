@@ -8,3 +8,13 @@
 ```
 docker-compose up -d
 ```
+
+2. Configurarlas variables de entorno requeridas
+```
+cp .env.example .env
+```
+
+3. Iniciar el proyecto en modo desarrollo
+```
+yarn start:dev
+```
