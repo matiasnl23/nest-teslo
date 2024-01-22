@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { EnvironmentValidationSchema } from './config/env.validation';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProductsModule } from './products/products.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { ProductsModule } from './products/products.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    CommonModule,
     ProductsModule,
   ],
   controllers: [],
