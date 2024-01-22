@@ -42,13 +42,21 @@ export class ProductsService {
     }
   }
 
-  findAll(pagionationDto: PaginationDto) {
+  async findAll(pagionationDto: PaginationDto) {
     const { limit = 10, offset = 0 } = pagionationDto;
 
-    return this.productRepository.find({
+    const products = await this.productRepository.find({
       take: limit,
       skip: offset,
+      relations: {
+        images: true,
+      },
     });
+
+    return products.map(({ images, ...product }) => ({
+      ...product,
+      images: images.map((image) => image.url),
+    }));
   }
 
   async findOne(term: string) {
