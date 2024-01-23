@@ -6,6 +6,9 @@
 .env*
 !.env.example
 
+!/static/products
+/static/products/*
+
 .yarn/*
 !.yarn/cache
 !.yarn/patches
