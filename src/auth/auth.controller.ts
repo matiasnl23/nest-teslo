@@ -5,6 +5,7 @@ import { CreateUserDto, LoginUserDto } from './dto';
 import { Request } from 'express';
 import { GetUser } from './decoratos/get-user.decorator';
 import { User } from './entities/user.entity';
+import { GetRawHeaders } from './decoratos/get-raw-headers.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -24,13 +25,15 @@ export class AuthController {
   @UseGuards(AuthGuard())
   testingPrivateRoute(
     @GetUser() user: User,
-    @GetUser('email') userEmail: string
+    @GetUser('email') userEmail: string,
+    @GetRawHeaders() rawHeaders: string[]
   ) {
     return {
       ok: true,
       message: "Hola mundo private",
       user,
-      userEmail
+      userEmail,
+      rawHeaders
     };
   }
 }
