@@ -8,6 +8,7 @@ import { GetRawHeaders } from './decoratos/get-raw-headers.decorator';
 import { UserRoleGuard } from './guards/user-role.guard';
 import { RoleProtected } from './decoratos/role-protected.decorator';
 import { ValidRoles } from './interfaces';
+import { Auth } from './decoratos/auth.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -44,6 +45,17 @@ export class AuthController {
   @RoleProtected(ValidRoles.superUser, ValidRoles.admin)
   @UseGuards(AuthGuard(), UserRoleGuard)
   testingPrivateRouteWithRoles(
+    @GetUser() user: User
+  ) {
+    return {
+      ok: true,
+      user
+    }
+  }
+
+  @Get('private-3')
+  @Auth(ValidRoles.superUser, ValidRoles.admin)
+  testingPrivateRouteWithRolesDefinitive(
     @GetUser() user: User
   ) {
     return {
