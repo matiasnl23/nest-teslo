@@ -23,12 +23,14 @@ export class AuthController {
   @Get('private')
   @UseGuards(AuthGuard())
   testingPrivateRoute(
-    @GetUser(['id', 'email']) user: User
+    @GetUser() user: User,
+    @GetUser('email') userEmail: string
   ) {
     return {
       ok: true,
       message: "Hola mundo private",
-      user
+      user,
+      userEmail
     };
   }
 }
