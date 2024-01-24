@@ -8,4 +8,6 @@ export const EnvironmentValidationSchema = Joi.object({
   DB_HOST: Joi.string().default('localhost'),
   DB_NAME: Joi.string().required(),
   DB_PORT: Joi.number().integer().default(5432),
+  JWT_SECRET: Joi.string().required(),
+  JWT_EXPIRATION: Joi.string().default('2h')
 });
