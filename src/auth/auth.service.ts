@@ -56,6 +56,11 @@ export class AuthService {
       ...user,
       token: this.getJwt({ userId: user.id })
     };
+
+  }
+
+  checkAuthStatus(user: User) {
+    return { ...user, token: this.getJwt({ userId: user.id }) };
   }
 
   private getJwt(payload: JwtPayload) {
