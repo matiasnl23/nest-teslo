@@ -9,6 +9,7 @@ import {
   ParseUUIDPipe,
   Query,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { ProductsService } from './products.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -18,6 +19,7 @@ import { ValidRoles } from 'src/auth/interfaces';
 import { GetUser } from 'src/auth/decoratos/get-user.decorator';
 import { User } from 'src/auth/entities/user.entity';
 
+@ApiTags('Products')
 @Controller('products')
 @Auth()
 export class ProductsController {
