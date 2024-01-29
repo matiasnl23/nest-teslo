@@ -5,14 +5,13 @@ import {
   Logger,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateProductDto } from './dto/create-product.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { isUUID } from 'class-validator';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
-import { Product, ProductImage } from './entities';
 import { User } from 'src/auth/entities/user.entity';
+import { CreateProductDto, UpdateProductDto } from '../dto';
+import { Product, ProductImage } from '../entities';
 
 @Injectable()
 export class ProductsService {
@@ -24,7 +23,7 @@ export class ProductsService {
     @InjectRepository(ProductImage)
     private readonly productImageRepository: Repository<ProductImage>,
     private readonly dataSource: DataSource,
-  ) { }
+  ) {}
 
   async create(createProductDto: CreateProductDto, user: User) {
     try {
@@ -134,15 +133,6 @@ export class ProductsService {
       throw new NotFoundException(`Product with id ${id} not found`);
   }
 
-  private handleExceptions(error: any) {
-    if (error.code === '23505') throw new BadRequestException(error.detail);
-
-    this.logger.error(error);
-    throw new InternalServerErrorException(
-      'Unexpected error, check server logs',
-    );
-  }
-
   async deleteAllProducts() {
     const query = this.productRepository.createQueryBuilder('product');
 
@@ -151,5 +141,14 @@ export class ProductsService {
     } catch (error) {
       this.handleExceptions(error);
     }
+  }
+
+  private handleExceptions(error: any) {
+    if (error.code === '23505') throw new BadRequestException(error.detail);
+
+    this.logger.error(error);
+    throw new InternalServerErrorException(
+      'Unexpected error, check server logs',
+    );
   }
 }

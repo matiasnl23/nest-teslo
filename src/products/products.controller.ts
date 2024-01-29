@@ -9,23 +9,34 @@ import {
   ParseUUIDPipe,
   Query,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ProductsService } from './products.service';
-import { CreateProductDto } from './dto/create-product.dto';
-import { UpdateProductDto } from './dto/update-product.dto';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { ProductsService, ProductPriceService } from './services';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { Auth } from 'src/auth/decoratos/auth.decorator';
 import { ValidRoles } from 'src/auth/interfaces';
 import { GetUser } from 'src/auth/decoratos/get-user.decorator';
 import { User } from 'src/auth/entities/user.entity';
 import { Product } from './entities';
+import {
+  CreateProductDto,
+  CreateProductPriceDto,
+  UpdateProductDto,
+} from './dto';
 
 @ApiTags('Products')
 @Controller('products')
 @ApiBearerAuth()
 @Auth()
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) { }
+  constructor(
+    private readonly productsService: ProductsService,
+    private readonly productPriceService: ProductPriceService,
+  ) {}
 
   @Post()
   @Auth(ValidRoles.admin, ValidRoles.superUser)
@@ -66,5 +77,34 @@ export class ProductsController {
   @ApiOkResponse()
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.productsService.remove(id);
+  }
+
+  @Post(':productId/price')
+  addPrice(
+    @Param('productId', ParseUUIDPipe) productId: string,
+    @Body() createProductPriceDto: CreateProductPriceDto,
+  ) {
+    return this.productPriceService.addPrice(productId, createProductPriceDto);
+  }
+
+  @Patch(':productId/price/:priceId')
+  updatePrice(
+    @Param('productId', ParseUUIDPipe) productId: string,
+    @Param('priceId', ParseUUIDPipe) priceId: string,
+    @Body() updateProductPriceDto: UpdateProductDto,
+  ) {
+    return this.productPriceService.updatePrice(
+      productId,
+      priceId,
+      updateProductPriceDto,
+    );
+  }
+
+  @Post(':productId/price/:priceId')
+  deletePrice(
+    @Param('productId', ParseUUIDPipe) productId: string,
+    @Param('priceId', ParseUUIDPipe) priceId: string,
+  ) {
+    return this.productPriceService.deletePrice(productId, priceId);
   }
 }
